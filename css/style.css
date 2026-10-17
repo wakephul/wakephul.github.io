@@ -1,0 +1,465 @@
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url(../assets/fonts/instrument-serif-italic.woff2) format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: normal; font-weight: 400; font-display: swap; src: url(../assets/fonts/instrument-serif.woff2) format("woff2"); }
+@font-face { font-family: "Space Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url(../assets/fonts/space-mono.woff2) format("woff2"); }
+@font-face { font-family: "Space Mono"; font-style: normal; font-weight: 700; font-display: swap; src: url(../assets/fonts/space-mono-bold.woff2) format("woff2"); }
+
+:root {
+  --bg: #eee8f8;
+  --paper: #fcfaff;
+  --ink: #1b1a1f;
+  --muted: #67636c;
+  --violet: #6d3fe6;
+  --pink: #f2a7c3;      /* the logo's second ink */
+  --fuchsia: #ec3c9a;
+  --lilac: #cdbdf5;
+  --sun: #ffcf3f;
+  --violet-soft: rgba(109, 63, 230, 0.2);
+  --serif: "Instrument Serif", Georgia, serif;
+  --mono: "Space Mono", ui-monospace, Menlo, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.09'/></svg>");
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg); }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; }
+::selection { background: var(--violet-soft); }
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+#scene:active { cursor: grabbing; }
+#scene.pointing { cursor: pointer; }
+
+/* ---------- header ---------- */
+#top {
+  position: fixed;
+  top: max(22px, env(safe-area-inset-top));
+  left: 32px;
+  right: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+#top > * { pointer-events: auto; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand span { font: 700 0.95rem var(--mono); letter-spacing: -0.03em; }
+.logo { width: 40px; height: 34px; color: var(--violet); }
+#index button, #count, #close, #card footer button, .label, #kicker, #tour {
+  font-family: var(--mono);
+  letter-spacing: 0.02em;   /* small text reads better with a little air between letters */
+}
+
+/* ---------- welcome ---------- */
+#intro {
+  position: fixed;
+  top: 112px;
+  left: 32px;
+  max-width: 360px;
+  transition: opacity 0.4s;
+}
+#intro.away { opacity: 0; pointer-events: none; }
+#intro h1 {
+  margin: 0 0 18px;
+  font: italic 400 4rem/0.94 var(--serif);
+  letter-spacing: -0.02em;
+  text-shadow: 3px 2px 0 var(--pink);
+}
+#intro p { margin: 0 0 22px; font-size: 1rem; line-height: 1.6; color: #3c3a42; }
+.hl { position: relative; white-space: nowrap; }
+.hl svg { position: absolute; left: -2%; bottom: -7px; width: 104%; height: 10px; color: var(--violet); }
+#tour {
+  padding: 11px 18px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.82rem;
+  box-shadow: 4px 4px 0 var(--fuchsia);
+  transition: background 0.2s, transform 0.12s, box-shadow 0.12s;
+}
+#tour:hover { background: var(--violet); }
+#tour:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--fuchsia); }
+#intro .elsewhere { margin: 20px 0 0; font-size: 0.88rem; color: var(--muted); }
+.elsewhere a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--violet); text-underline-offset: 3px; text-decoration-thickness: 2px; }
+.elsewhere a:hover { color: var(--violet); }
+
+/* ---------- index ---------- */
+#index {
+  position: fixed;
+  left: 32px;
+  bottom: max(28px, env(safe-area-inset-bottom));
+}
+.label { margin: 0 0 10px; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; }
+#index ol { margin: 0; padding: 0; list-style: none; }
+#index button {
+  display: flex;
+  gap: 12px;
+  padding: 3px 0;
+  font-size: 0.82rem;
+  transition: transform 0.2s, color 0.2s;
+}
+#index button i { font-style: normal; color: var(--violet); }
+#index button:hover, #index button:focus-visible, #index button.on { transform: translateX(5px); color: var(--violet); }
+#index button:active { transform: translateX(5px) scale(0.97); transition-duration: 0.08s; }
+#index { transition: opacity 0.3s; }
+#index.away { opacity: 0; pointer-events: none; }
+#index .stamp { margin: 14px 0 0; }
+
+/* ---------- how to move around, and the way back ---------- */
+#hint {
+  position: fixed;
+  right: 32px;
+  bottom: max(28px, env(safe-area-inset-bottom));
+  max-width: calc(100vw - 460px);   /* leaves room for the index and its date on the left */
+  margin: 0;
+  text-align: right;
+  font: 0.7rem/1.6 var(--mono);
+  color: var(--muted);
+  transition: opacity 0.3s;
+}
+#reset {
+  position: fixed;
+  right: 32px;
+  bottom: max(56px, calc(env(safe-area-inset-bottom) + 28px));
+  padding: 8px 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--ink);
+  font: 0.76rem var(--mono);
+}
+#reset:hover { background: var(--sun); }
+#reset:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+#reset[hidden] { display: none; }
+body:has(#card:not([hidden])) #hint { opacity: 0; }
+#grip { display: none; }
+@media (max-width: 900px) { #hint { display: none; } }
+
+/* ---------- typing "wakephul": it rains w's ---------- */
+.rain {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 29px;
+  color: var(--violet);
+  pointer-events: none;
+  z-index: 30;
+  animation: rain 2s cubic-bezier(0.35, 0.1, 0.7, 1) both;
+}
+@keyframes rain {
+  from { transform: translate(var(--x0), 10px) rotate(0); opacity: 1; }
+  to { transform: translate(var(--x1), 105vh) rotate(var(--r)); opacity: 0.8; }
+}
+
+/* ---------- hover label in the room ---------- */
+#label {
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 6px 11px 6px 9px;
+  background: var(--paper);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  font: 0.78rem var(--mono);
+  pointer-events: none;
+  white-space: nowrap;
+}
+#label i { font-style: normal; color: var(--violet); margin-right: 6px; }
+
+/* ---------- the card: a page of the diary ----------
+   Same language as the logo: an ink outline with a second colour printed a bit off register. */
+#card {
+  position: fixed;
+  top: 24px;
+  right: 30px;
+  bottom: 30px;
+  width: min(460px, calc(100vw - 54px));
+  display: flex;
+  flex-direction: column;
+  background-color: var(--paper);
+  background-image: var(--grain), radial-gradient(rgba(42, 21, 112, 0.11) 1px, transparent 1.3px);
+  background-size: auto, 18px 18px;
+  background-position: 0 0, 9px 9px;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 7px 7px 0 var(--pink);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+}
+#card[hidden] { display: flex; transform: translate(30px, 10px) rotate(1deg); opacity: 0; pointer-events: none; }
+.tape {
+  position: absolute;
+  top: -15px;
+  left: calc(50% - 64px);
+  width: 128px;
+  height: 30px;
+  background: rgba(236, 60, 154, 0.42);
+  transform: rotate(-3.5deg);
+  clip-path: polygon(3% 0, 97% 0, 100% 22%, 96% 46%, 100% 72%, 97% 100%, 3% 100%, 0 76%, 4% 50%, 0 24%);
+}
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 26px 10px;
+}
+#count { font-size: 0.75rem; color: var(--muted); }
+#count b { font: italic 400 1.5rem/1 var(--serif); color: var(--violet); margin-right: 2px; }
+#close, #card footer button {
+  padding: 7px 13px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  font-size: 0.76rem;
+  transition: background 0.15s, transform 0.12s, box-shadow 0.12s;
+}
+#close { box-shadow: 2px 2px 0 var(--ink); }
+#close:hover, #prev:hover { background: var(--sun); }
+#close:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+#prev:active { transform: scale(0.97); }
+#card-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 26px 26px;
+  overscroll-behavior: contain;
+  -webkit-mask-image: linear-gradient(transparent, #000 16px);
+  mask-image: linear-gradient(transparent, #000 16px);   /* text fades out under the header instead of being cut */
+  scrollbar-width: thin;
+  scrollbar-color: var(--lilac) transparent;
+}
+
+/* the thing, cut out and stuck on two circles of colour, like the prints on the wall */
+#sticker { position: relative; width: 210px; height: 190px; margin: 4px auto 6px; }
+#sticker::before, #sticker::after { content: ""; position: absolute; border-radius: 50%; }
+#sticker::before { width: 150px; height: 150px; left: 14px; top: 26px; background: var(--ink-a, var(--pink)); }
+#sticker::after { width: 112px; height: 112px; right: 10px; top: 8px; background: var(--ink-b, var(--lilac)); mix-blend-mode: multiply; }
+#sticker[hidden] { display: none; }
+#cutout {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 190px;
+  width: auto;
+  aspect-ratio: 1;
+  max-width: 100%;
+  margin: 0 auto;
+  object-fit: contain;
+  transition: opacity 0.2s;
+  transform: rotate(-3deg);
+  /* a thin white edge, like a die-cut sticker */
+  filter: drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff) drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff)
+    drop-shadow(0 9px 9px rgba(30, 20, 40, 0.22));
+}
+#cutout.wait { opacity: 0; }
+
+#card h2:focus { outline: none; }
+#card h2 {
+  margin: 8px 0 12px;
+  font: italic 400 3.4rem/1 var(--serif);
+  letter-spacing: -0.02em;
+  text-shadow: 3px 2px 0 var(--pink);
+}
+#kicker {
+  display: inline-block;
+  margin: 0 0 20px;
+  padding: 3px 11px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  font-size: 0.72rem;
+}
+#kicker:empty { display: none; }
+#card-body p, #card-body li { font-size: 1.02rem; line-height: 1.62; }
+#card-body p { margin: 0 0 12px; }
+#card-body h3 {
+  display: inline-block;
+  margin: 24px 0 8px;
+  padding: 0 4px;
+  font: 700 1rem var(--sans);
+  background: linear-gradient(transparent 55%, rgba(236, 60, 154, 0.32) 55%, rgba(236, 60, 154, 0.32) 92%, transparent 92%);
+}
+#card-body ul { margin: 0; padding: 0; list-style: none; }
+#card-body ul li { position: relative; padding-left: 22px; margin-bottom: 6px; }
+#card-body ul li::before { content: "→"; position: absolute; left: 0; color: var(--violet); font-family: var(--mono); }
+.papers li { padding-left: 0 !important; margin-bottom: 14px !important; line-height: 1.4 !important; }
+.papers li::before { content: none !important; }
+.papers .y { display: inline-block; margin-bottom: 3px; padding: 1px 7px; border-radius: 999px; background: var(--lilac); font: 0.7rem var(--mono); }
+.papers a, .papers span.t { display: block; font-size: 0.95rem; text-decoration: none; }
+.papers a:hover { text-decoration: underline; text-decoration-color: var(--fuchsia); }
+.papers .v { display: block; font-size: 0.82rem; color: var(--muted); }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.links a {
+  padding: 7px 13px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--ink);
+  font: 0.78rem var(--mono);
+  text-decoration: none;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+}
+.links a::after { content: " ↗"; }
+.links a:hover { background: var(--sun); }
+.links a:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+#card-body a:not(.links a):not(.papers a) { color: var(--violet); }
+
+#card footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px 16px;
+  border-top: 1.5px solid var(--ink);
+}
+#card #next { background: var(--ink); color: var(--paper); box-shadow: 3px 3px 0 var(--fuchsia); }
+#card #next:hover { background: var(--violet); }
+#card #next:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--fuchsia); }
+#card footer button[hidden] { visibility: hidden; display: block; }
+/* where you are in the tour */
+#dots { display: flex; gap: 5px; }
+#dots i { width: 7px; height: 7px; border: 1.5px solid var(--ink); border-radius: 50%; }
+#dots i.on { background: var(--fuchsia); border-color: var(--fuchsia); }
+
+/* ---------- the card trick ---------- */
+.trick { margin-top: 22px; padding: 18px; background: #f2efe9; }
+.trick p { margin: 0 0 14px !important; font-size: 0.92rem !important; }
+.hand { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.pc {
+  width: 52px;
+  height: 74px;
+  padding: 5px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 3px 8px rgba(0, 0, 0, 0.08);
+  font: 700 0.9rem/1 var(--mono);
+}
+.pc b { font-size: 1.25rem; align-self: flex-end; }
+.pc.red { color: #c8323b; }
+.trick button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 0.78rem var(--mono);
+}
+.trick button:hover { background: var(--violet); }
+.trick button:active { transform: scale(0.97); }
+
+/* ---------- loading ---------- */
+#loading {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  background: var(--bg);
+  transition: opacity 0.6s;
+}
+#loading .logo { width: 88px; height: 75px; }
+#loading .logo .w-main { stroke-dasharray: 260; animation: draw 1.6s ease-in-out infinite alternate; }
+#loading p { margin: 0; font: 0.8rem var(--mono); color: var(--muted); }
+#loading.done { opacity: 0; pointer-events: none; }
+#loading[hidden] { display: none; }
+#loading.failed .logo .w-main { animation: none; }
+#loading.failed p { max-width: 320px; text-align: center; line-height: 1.6; white-space: pre-line; }
+@keyframes draw { from { stroke-dashoffset: 260; } to { stroke-dashoffset: 0; } }
+
+/* ---------- phones, and tablets held upright: the card comes up from the bottom (same query as main.js) ---------- */
+@media (max-width: 760px), (orientation: portrait) and (max-width: 1100px) {
+  #top { left: 18px; right: 18px; top: max(14px, env(safe-area-inset-top)); }
+  #intro { top: calc(max(14px, env(safe-area-inset-top)) + 46px); left: 18px; right: 18px; max-width: 560px; }
+  #intro h1 { font-size: 2.3rem; margin-bottom: 10px; }
+  #intro p { font-size: 0.92rem; line-height: 1.5; margin-bottom: 12px; }
+  #intro .elsewhere { margin-top: 10px; font-size: 0.82rem; }
+  #tour { padding: 9px 15px; font-size: 0.78rem; }
+  #hint { display: none; }
+  #reset { top: max(14px, env(safe-area-inset-top)); bottom: auto; right: 18px; padding: 6px 11px; font-size: 0.7rem; }
+
+  /* the index: a row of stickers to scroll sideways */
+  #index { left: 0; right: 0; bottom: max(14px, env(safe-area-inset-bottom)); }
+  #index .label { display: none; }
+  #index ol { display: flex; gap: 8px; overflow-x: auto; padding: 4px 18px 8px; scrollbar-width: none; }
+  #index ol::-webkit-scrollbar { display: none; }
+  #index button {
+    flex: none;
+    padding: 8px 13px;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    background: var(--paper);
+    box-shadow: 2px 2px 0 var(--ink);
+    white-space: nowrap;
+  }
+  #index button:hover, #index button.on { transform: none; }
+  #index button:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+
+  /* the card: a sheet that opens half way, with a grip to pull it up */
+  #card {
+    top: auto; left: 8px; right: 8px; bottom: 8px; width: auto;
+    height: 54vh;   /* main.js takes over the height: it follows the finger and springs into place */
+    box-shadow: 0 -5px 0 var(--pink);
+  }
+  #grip, #card .card-top { touch-action: none; }
+  #card[hidden] { transform: translateY(40px); }
+  .tape { display: none; }
+  #grip { display: block; width: 100%; height: 22px; padding: 0; }
+  #grip::before { content: ""; display: block; width: 46px; height: 5px; margin: 9px auto 0; border-radius: 3px; background: var(--ink); opacity: 0.3; }
+  .card-top { padding: 2px 18px 6px; }
+  #card-scroll { padding: 4px 18px 20px; }
+  /* the cut-out goes up beside the title, so the half-open sheet already shows some text */
+  #sticker { float: right; width: 112px; height: 100px; margin: 0 -6px 0 6px; }
+  #sticker::before { width: 78px; height: 78px; left: 6px; top: 18px; }
+  #sticker::after { width: 58px; height: 58px; right: 4px; top: 4px; }
+  #cutout { height: 100px; }
+  #kicker { margin-bottom: 14px; }
+  #card-body { clear: both; }
+  #card h2 { font-size: 2.4rem; margin-bottom: 10px; }
+  #card footer { padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); }
+  #dots { display: none; }
+}
+
+/* ---------- wide but short screens: small laptops, phones held sideways ---------- */
+@media (min-width: 761px) and (max-height: 820px) and (orientation: landscape) {
+  #intro { top: 88px; }
+  #intro h1 { font-size: 3.3rem; }
+  #index ol { columns: 2; column-gap: 28px; }
+}
+@media (min-width: 761px) and (max-height: 520px) and (orientation: landscape) {
+  #hint { display: none; }
+  #top { top: max(12px, env(safe-area-inset-top)); left: max(20px, env(safe-area-inset-left)); }
+  #intro { top: 56px; left: max(20px, env(safe-area-inset-left)); max-width: 300px; }
+  #intro h1 { font-size: 2.2rem; margin-bottom: 10px; }
+  #intro p { font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px; }
+  #intro .elsewhere { margin-top: 10px; }
+  #tour { padding: 8px 14px; }
+  #index { left: 0; right: 0; bottom: max(10px, env(safe-area-inset-bottom)); }
+  #index .label { display: none; }
+  #index ol { columns: auto; display: flex; gap: 6px; overflow-x: auto; padding: 0 max(20px, env(safe-area-inset-left)) 4px; scrollbar-width: none; }
+  #index button { flex: none; padding: 7px 11px; background: var(--paper); white-space: nowrap; }
+  #index button:hover, #index button.on { transform: none; }
+  #index button:active { transform: scale(0.97); }
+  #card { top: 8px; bottom: 8px; right: max(8px, env(safe-area-inset-right)); width: min(400px, 52vw); }
+  .card-top { padding: 14px 22px 0; }
+  #card-scroll { padding: 0 22px 16px; }
+  #sticker { display: none; }
+  #card h2 { font-size: 2.3rem; }
+  #card footer { padding: 10px 22px 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #loading .logo .w-main { animation: none; }
+  #card, #intro { transition: none; }
+}

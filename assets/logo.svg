@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124 106">
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="12">
+    <path stroke="#f2a7c3" transform="translate(5 4)" d="M14 23 C 19 43, 25 62, 33 80 C 38 66, 45 51, 55 37 C 61 52, 67 66, 74 79 C 82 60, 92 39, 106 17" />
+    <path stroke="#6d3fe6" style="mix-blend-mode: multiply" d="M14 23 C 19 43, 25 62, 33 80 C 38 66, 45 51, 55 37 C 61 52, 67 66, 74 79 C 82 60, 92 39, 106 17" />
+  </g>
+</svg>

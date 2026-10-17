@@ -1,0 +1,12 @@
+# sorgenti Blender e vecchia versione del sito: restano fuori dal repository
+blender/*.blend
+blender/*.blend1
+_old/
+
+# cartella di appoggio della cottura e anteprime fatte con --render
+blender/_out/
+blender/anteprime/
+anteprima.png
+
+.DS_Store
+__pycache__/

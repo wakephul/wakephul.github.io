@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>wakephul · la w con l'ombra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg: #eceae6; --paper: #fbfaf7; --ink: #1b1a1f; --muted: #6e6a73; --violet: #6d3fe6; }
+  body { margin: 0; padding: 44px 40px 64px; background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  h1 { margin: 0 0 6px; font: italic 400 2.6rem/1 "Instrument Serif", serif; }
+  .lead { margin: 0 0 36px; font: 0.8rem/1.6 "Space Mono", monospace; color: var(--muted); max-width: 640px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
+  .opt { background: var(--paper); padding: 22px 22px 18px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 10px 30px rgba(0,0,0,.06); }
+  .num { font: 700 0.75rem "Space Mono", monospace; color: var(--violet); }
+  .big { height: 140px; display: grid; place-items: center; }
+  .big svg { height: 112px; width: auto; max-width: 100%; }
+  .row { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 10px 12px; background: var(--bg); }
+  .row svg { height: 30px; width: auto; }
+  .row .fav { width: 16px; height: 16px; margin-left: auto; }
+  .wordmark { font: 700 0.92rem "Space Mono", monospace; letter-spacing: -0.03em; }
+  .note { margin: 12px 0 0; font-size: 0.87rem; line-height: 1.5; color: var(--muted); }
+</style>
+</head>
+<body>
+<h1>la w a pennarello, con l'ombra</h1>
+<p class="lead">la w è sempre la a1, cambia solo l'ombra. sotto a ogni proposta c'è come viene in testata, sul grigio del sito, e a destra a 16 pixel, come icona della scheda.</p>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="marker" x="-10%" y="-10%" width="125%" height="125%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" />
+    </filter>
+    <filter id="soft" x="-15%" y="-15%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" result="w" />
+      <feDropShadow in="w" dx="2" dy="5" stdDeviation="3" flood-color="#2a1570" flood-opacity=".35" />
+    </filter>
+    <pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="1.6" height="4" fill="#1b1a1f" />
+    </pattern>
+    <path id="wp" d="M14 23 C 19 43, 25 62, 33 80 C 38 66, 45 51, 55 37 C 61 52, 67 66, 74 79 C 82 60, 92 39, 106 17" />
+    <path id="wp2" d="M17 21 C 22 41, 28 60, 35 76 C 41 63, 47 50, 56 40 C 62 54, 68 66, 76 75 C 83 57, 93 37, 108 20" />
+
+    <symbol id="o1" viewBox="0 0 124 106">
+      <g filter="url(#marker)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="11">
+        <use href="#wp" stroke="#1b1a1f" transform="translate(4 5)" />
+        <use href="#wp" stroke="#6d3fe6" /><use href="#wp2" stroke="#6d3fe6" stroke-width="5" opacity=".35" />
+      </g>
+    </symbol>
+    <symbol id="o2" viewBox="0 0 124 106">
+      <g filter="url(#marker)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="11">
+        <use href="#wp" stroke="#2a1570" transform="translate(4 5)" />
+        <use href="#wp" stroke="#6d3fe6" /><use href="#wp2" stroke="#6d3fe6" stroke-width="5" opacity=".35" />
+      </g>
+    </symbol>
+    <symbol id="o3" viewBox="0 0 124 106">
+      <g filter="url(#marker)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="11">
+        <use href="#wp" stroke="#f2a7c3" transform="translate(5 4)" />
+        <use href="#wp" stroke="#6d3fe6" style="mix-blend-mode: multiply" />
+      </g>
+    </symbol>
+    <symbol id="o4" viewBox="0 0 124 106">
+      <g filter="url(#soft)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="11">
+        <use href="#wp" stroke="#6d3fe6" /><use href="#wp2" stroke="#6d3fe6" stroke-width="5" opacity=".35" />
+      </g>
+    </symbol>
+    <symbol id="o5" viewBox="0 0 124 106">
+      <g filter="url(#marker)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="11">
+        <use href="#wp" stroke="url(#hatch)" transform="translate(5 6)" />
+        <use href="#wp" stroke="#6d3fe6" /><use href="#wp2" stroke="#6d3fe6" stroke-width="5" opacity=".35" />
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="grid">
+  <section class="opt">
+    <div class="num">o1</div>
+    <div class="big"><svg viewBox="0 0 124 106"><use href="#o1" /></svg></div>
+    <div class="row"><svg viewBox="0 0 124 106"><use href="#o1" /></svg><span class="wordmark">wakephul</span><svg class="fav" viewBox="0 0 124 106"><use href="#o1" /></svg></div>
+    <p class="note">ombra netta nera, spostata in basso a destra, come un adesivo o un timbro un po' storto.</p>
+  </section>
+  <section class="opt">
+    <div class="num">o2</div>
+    <div class="big"><svg viewBox="0 0 124 106"><use href="#o2" /></svg></div>
+    <div class="row"><svg viewBox="0 0 124 106"><use href="#o2" /></svg><span class="wordmark">wakephul</span><svg class="fav" viewBox="0 0 124 106"><use href="#o2" /></svg></div>
+    <p class="note">la stessa, ma l'ombra è viola scuro: si stacca meno e resta tutta nella stessa famiglia di colore.</p>
+  </section>
+  <section class="opt">
+    <div class="num">o3</div>
+    <div class="big"><svg viewBox="0 0 124 106"><use href="#o3" /></svg></div>
+    <div class="row"><svg viewBox="0 0 124 106"><use href="#o3" /></svg><span class="wordmark">wakephul</span><svg class="fav" viewBox="0 0 124 106"><use href="#o3" /></svg></div>
+    <p class="note">stampa fuori registro: due passaggi di colore che non combaciano, come nelle fanzine stampate in risografia.</p>
+  </section>
+  <section class="opt">
+    <div class="num">o4</div>
+    <div class="big"><svg viewBox="0 0 124 106"><use href="#o4" /></svg></div>
+    <div class="row"><svg viewBox="0 0 124 106"><use href="#o4" /></svg><span class="wordmark">wakephul</span><svg class="fav" viewBox="0 0 124 106"><use href="#o4" /></svg></div>
+    <p class="note">ombra morbida, come se la w fosse un pezzo di carta appoggiato sul foglio. è la più tranquilla.</p>
+  </section>
+  <section class="opt">
+    <div class="num">o5</div>
+    <div class="big"><svg viewBox="0 0 124 106"><use href="#o5" /></svg></div>
+    <div class="row"><svg viewBox="0 0 124 106"><use href="#o5" /></svg><span class="wordmark">wakephul</span><svg class="fav" viewBox="0 0 124 106"><use href="#o5" /></svg></div>
+    <p class="note">ombra a tratteggio, fatta a penna come nei fumetti. a 16 pixel il tratteggio sparisce e resta una macchia grigia.</p>
+  </section>
+</div>
+</body>
+</html>

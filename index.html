@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>wakephul · la mia stanza</title>
+<meta name="description" content="la stanza di riccardo, su internet wakephul: bici, corsa, basket, chitarra, un mazzo di carte e un po' di ricerca." />
+<meta name="theme-color" content="#eee8f8" />
+<link rel="canonical" href="https://wakephul.github.io/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="wakephul · la mia stanza" />
+<meta property="og:description" content="una stanza in 3D. dentro: bici, corsa, basket, chitarra, un mazzo di carte e un po' di ricerca." />
+<meta property="og:url" content="https://wakephul.github.io/" />
+<meta property="og:image" content="https://wakephul.github.io/assets/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+<link rel="icon" href="assets/icon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="assets/icon-180.png" />
+<link rel="preload" href="assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="css/style.css" />
+<script>
+  // if the room cannot load (no WebGL, a CDN down, an old browser), say so instead of loading forever
+  const roomFailed = () => {
+    const l = document.getElementById("loading");
+    if (!l || l.classList.contains("done")) return;
+    l.classList.add("failed");
+    l.querySelector("p").textContent = "la stanza non si è caricata.\nprova a ricaricare la pagina, o ad aprirla con un browser aggiornato.";
+  };
+  addEventListener("error", roomFailed);
+  addEventListener("unhandledrejection", roomFailed);
+</script>
+</head>
+<body>
+<canvas id="scene" role="img" aria-label="la stanza in 3D"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="marker" x="-10%" y="-20%" width="125%" height="145%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" />
+    </filter>
+    <!-- the logo: a marker w printed over a pink pass that does not line up, like a risograph (design/loghi.html, o3) -->
+    <symbol id="w" viewBox="0 0 124 106">
+      <g filter="url(#marker)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="11">
+        <path class="w-main" style="stroke: var(--pink)" transform="translate(5 4)" d="M14 23 C 19 43, 25 62, 33 80 C 38 66, 45 51, 55 37 C 61 52, 67 66, 74 79 C 82 60, 92 39, 106 17" />
+        <path class="w-main" stroke="currentColor" style="mix-blend-mode: multiply" d="M14 23 C 19 43, 25 62, 33 80 C 38 66, 45 51, 55 37 C 61 52, 67 66, 74 79 C 82 60, 92 39, 106 17" />
+      </g>
+    </symbol>
+    <!-- hand-drawn underline -->
+    <symbol id="squiggle" viewBox="0 0 200 14" preserveAspectRatio="none">
+      <path filter="url(#marker)" d="M3 9 C 30 4, 52 12, 80 7 S 140 3, 197 8" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
+    </symbol>
+  </defs>
+</svg>
+
+<header id="top">
+  <a class="brand" href="#">
+    <svg class="logo" aria-hidden="true"><use href="#w" /></svg>
+    <span>wakephul</span>
+  </a>
+</header>
+
+<section id="intro">
+  <h1>ciao, questa è<br />la mia stanza.</h1>
+  <p>ci ho buttato un po' di cose della mia vita.<br>gli elementi <span class="hl">bianchi<svg aria-hidden="true"><use href="#squiggle" /></svg></span> sono cliccabili e raccontano qualche dettaglio.</p>
+  <button id="tour" type="button">fai un giro <span aria-hidden="true">→</span></button>
+  <p class="elsewhere">altrove: <a href="https://www.instagram.com/wakephul/" target="_blank" rel="noopener">instagram</a> · <a href="https://www.strava.com/athletes/67722942" target="_blank" rel="noopener">strava</a> · <a href="https://github.com/wakephul" target="_blank" rel="noopener">github</a></p>
+</section>
+
+<nav id="index" aria-label="indice">
+  <p class="label">indice</p>
+  <ol></ol>
+  <p class="label stamp">ultimo aggiornamento: ottobre 2026</p>
+</nav>
+
+<div id="label" hidden></div>
+
+<p id="hint" aria-hidden="true">trascina per girare · rotella per avvicinarti · tasto destro per spostarti · doppio clic per andare lì</p>
+<button id="reset" type="button" hidden>torna alla vista intera ↺</button>
+
+<article id="card" hidden aria-labelledby="card-title">
+  <div class="tape" aria-hidden="true"></div>
+  <button id="grip" type="button" aria-label="allarga la scheda"></button>
+  <div class="card-top">
+    <span id="count"></span>
+    <button id="close" type="button">chiudi <span aria-hidden="true">×</span></button>
+  </div>
+  <div id="card-scroll">
+    <div id="sticker"><img id="cutout" alt="" width="640" height="640" /></div>
+    <h2 id="card-title" tabindex="-1"></h2>
+    <p id="kicker"></p>
+    <div id="card-body"></div>
+  </div>
+  <footer>
+    <button id="prev" type="button"></button>
+    <span id="dots" aria-hidden="true"></span>
+    <button id="next" type="button"></button>
+  </footer>
+</article>
+
+<div id="loading">
+  <svg class="logo" aria-hidden="true"><use href="#w" /></svg>
+  <p>metto in ordine la stanza…</p>
+  <noscript><style>#loading > p { display: none; }</style><span>per entrare nella stanza serve JavaScript: senza, resta chiusa.</span></noscript>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module" src="js/main.js" onerror="roomFailed()"></script>
+</body>
+</html>
